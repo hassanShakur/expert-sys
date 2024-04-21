@@ -500,8 +500,6 @@ goal :-
 :- initialization(goal, halt).
 ```
 
-This Prolog program defines predicates for computing the distance matrix, finding the Minimum Spanning Tree (MST), minimum weighted matching, and Euler tour. Finally, it computes the TSP tour using the XIS algorithm and prints the result.
-
 To run this program, save it in a file (e.g., `tsp.pl`) and consult it with a Prolog interpreter:
 
 ```prolog
