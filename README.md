@@ -333,8 +333,6 @@ Table depiction:
 
 ### Solution
 
-Certainly! Below is a Prolog program to solve the 4-Queen problem as per the given instructions:
-
 ```prolog
 % Define the predicate to remove an element from a list
 del(I, [I|L], L).
@@ -472,52 +470,3 @@ euler_tour(MST, [Current|Visited], [Current|Path]) :-
     select((Current, Next), MST, NewMST),
     select((Next, Current), NewMST, NewMST1),
     euler_tour(NewMST1, [Next, Current|Visited], Path).
-
-% Compute TSP tour
-tsp_tour(Cities, Tour) :-
-    distance_matrix(Cities, Cities, Distances),
-    prim_mst(Distances, MST),
-    minimum_matching(MST, Matchings),
-    flatten(Matchings, FlattenMatchings),
-    sort(FlattenMatchings, SortedMatchings),
-    euler_tour(SortedMatchings, EulerTour),
-    tour_from_euler(EulerTour, Tour).
-
-tour_from_euler([End], [End]).
-tour_from_euler([City1, City2|Rest], [City1|Tour]) :-
-    tour_from_euler([City2|Rest], Tour).
-
-% Example usage
-example_cities([(0, 0), (1, 2), (3, 1), (5, 4), (2, 3)]).
-
-% Goal
-goal :-
-    example_cities(Cities),
-    tsp_tour(Cities, Tour),
-    writeln(Tour).
-
-% Run the goal
-:- initialization(goal, halt).
-```
-
-To run this program, save it in a file (e.g., `tsp.pl`) and consult it with a Prolog interpreter:
-
-```prolog
-?- consult('tsp.pl').
-```
-
-Then, execute the `goal` query:
-
-```prolog
-?- goal.
-```
-
-This will compute and print the TSP tour for the given example cities.
-
-## Team
-
-1. Hassan Shakur - CIT-223-027/2020
-2. Jovan - CIT-223-036/2020
-3. Gidion Murage - CIT-223-026/2020
-4. Lio - CIT-223-010/2020
-5. Ephraim - CIT-223-021/2020
