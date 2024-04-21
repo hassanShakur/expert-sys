@@ -100,3 +100,99 @@ To work with Prolog, you can use various Prolog interpreters available. Some pop
    ```
 
 After loading the file, you can pose queries to the Prolog interpreter to test your facts and rules.
+
+## Experiment Number 2
+
+### Objective
+
+- Write simple fact for following:
+
+```txt
+a. Ram likes mango.
+b, Seema is a girl,
+c. Bill likes Cindy.
+d, Rose is red,
+e. John owns gold.
+Program:
+Clauses
+likes(ram ,mango).
+girl(seema). red(rose).
+likes(bill ,cindy).
+owns(john ,gold),
+Output:
+Goal queries
+What).
+What= mango
+Who: Cindy
+What— rose
+Who—john What= gold.
+OUTCOME: Student will understand how to write simple facts using prolog.
+Assignment:
+Write simple fact for following:
+a. Ram likes mango.
+b. Seema is a girl.
+c. Bill likes Cindy.
+d, Rose is red.
+e. John owns gold.
+```
+
+### Solution
+
+```prolog
+% Define the simple facts
+
+likes(ram, mango).
+girl(seema).
+likes(bill, cindy).
+red(rose).
+owns(john, gold).
+
+% Define the queries to test the facts
+
+query_likes_mango :-
+    likes(ram, What),
+    format('What: ~w~n', [What]).
+
+query_likes_cindy :-
+    likes(Who, cindy),
+    format('Who: ~w~n', [Who]).
+
+query_red_rose :-
+    red(What),
+    format('What: ~w~n', [What]).
+
+query_owns_gold :-
+    owns(Who, gold),
+    format('Who: ~w~n', [Who]).
+
+% Main goal to test the facts
+
+goal :-
+    query_likes_mango,
+    query_likes_cindy,
+    query_red_rose,
+    query_owns_gold.
+
+% Run the goal to test the facts
+
+:- initialization(goal, halt).
+```
+
+#### Instructions to Run:
+
+1. Save the above program in a file, for example, `simple_facts.pl`.
+2. Open a Prolog interpreter.
+3. Load the file using `consult/1` predicate:
+
+```prolog
+?- consult('simple_facts.pl').
+```
+
+4. Once loaded, execute the `goal` query to test the defined facts:
+
+```prolog
+?- goal.
+```
+
+This will execute the queries defined in the `goal` predicate and print the results based on the simple facts provided.
+
