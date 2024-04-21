@@ -515,3 +515,11 @@ Then, execute the `goal` query:
 ```
 
 This will compute and print the TSP tour for the given example cities.
+
+## Team
+
+1. Hassan Shakur - CIT-223-027/2020
+2. Jovan - CIT-223-036/2020
+3. Gidion Murage - CIT-223-026/2020
+4. Lio - CIT-223-010/2020
+5. Ephraim - CIT-223-021/2020
