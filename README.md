@@ -344,3 +344,140 @@ goal(Q) :-
 :- initialization(goal(Q), halt).
 ```
 
+## Experiment Number 8
+
+### Obiective
+
+- Write a Program to implement Travelling Salesman Problem.
+
+**Theory/concept**
+
+A traveling salesman has to travel through a bunch of cities, in such a way that the expenses on traveling are minimized. This is the infamous Traveling Salesman Problem (aka TSP) problem.
+
+**Theory**
+
+If you want to get a notion of what numbers we are talking about 100k at this: The number of routes with 50 cities is (50-2)!, which is:
+
+    12,413,915,592,536,072,670,862,289,047,373,375,038,521,486,354,677,760,000,000,000
+
+### Description Of Algorithms
+
+**X2 Algorithm**
+
+- Minimum Spanning Tree (MST).
+- Perform preoder tree walk on MST, and construct a list Of the vertices as we encounter them (i.e. each vertex will appear only one - corresponding to its first encounter).
+- The output tour is Hamiltonian cycle that visits the vertices in order of this list. The running time of this algorithm is O (n2log (n))time; since the input is a complete graph (n is the number of inserted points). The Find length of the resulting tour is at most twice of the optimal tour, since its length is at most twice that of the MST, and the optimal tour is longer than the MST.
+
+**X1.5 Algorithm**
+
+- Find Minimum Spanning Tree (MST).
+- Find minimum weighted matching between Odd vertices of MST.
+- Find an Euler tour in resulting graph and create list of vertices that represents it.
+- Find Hamilton cycle (which is in fact TSP tour) by visiting vellices in order of created list when only first appearance of vertex in list is encountered and any other appearance is skipped.
+- The approximation ratio bound is 1.5, although the argument here is a bit more complicated.
+- Iterative Algorithm:
+- We generated an arbitrary initial solution, by visiting all points in order they were inserted. Then in each iteration.
+
+1. Select two random cities 2.
+2. Interchange the two cities predecessors
+3. Calculate the weight of tesulting tour.
+4. If new weight is smaller then old one - if so, replace the old tour by the new tour, else undo (2).
+
+### Assignment
+
+Write a Program in prolog to implement Traveling Salesman Problem.
+
+### Solution
+
+```prolog
+% Define the distance between two cities
+distance((X1, Y1), (X2, Y2), D) :-
+    D is sqrt((X2 - X1)**2 + (Y2 - Y1)**2).
+
+% Compute the distance matrix between all cities
+distance_matrix([], _, []).
+distance_matrix([City|Cities], Cities, [Row|Matrix]) :-
+    maplist(distance(City), Cities, Row),
+    distance_matrix(Cities, Cities, Matrix).
+
+% Find the minimum spanning tree (MST) using Prim's algorithm
+prim_mst([[Start|Rest]|Graph], MST) :-
+    prim_mst(Graph, [Start], [], MST, Rest).
+
+prim_mst(_, _, MST, MST, []).
+prim_mst(Graph, MSTSoFar, Acc, MST, Remaining) :-
+    select(Edge, Remaining, NewRemaining),
+    (   (member(Start, MSTSoFar), member(End, Edge), \+ member(End, MSTSoFar))
+    ->  MSTNext = [Edge|Acc]
+    ;   MSTNext = Acc
+    ),
+    append(MSTSoFar, Edge, NewMSTSoFar),
+    prim_mst(Graph, NewMSTSoFar, MSTNext, MST, NewRemaining).
+
+% Find minimum weighted matching between odd vertices of MST
+minimum_matching([], []).
+minimum_matching([Vertex|Vertices], [Matching|Matchings]) :-
+    minimum_matching(Vertices, Vertex, Matching, OtherVertices),
+    minimum_matching(OtherVertices, Matchings).
+
+minimum_matching([], _, [], []).
+minimum_matching([Vertex|Vertices], Vertex1, (Vertex1, Vertex), OtherVertices) :-
+    minimum_matching(Vertices, Vertex1, Matching, OtherVertices),
+    append(Matching, OtherVertices, OtherVertices).
+minimum_matching([Vertex|Vertices], Vertex1, Matching, [Vertex|OtherVertices]) :-
+    minimum_matching(Vertices, Vertex1, Matching, OtherVertices).
+
+% Find Euler tour
+euler_tour(MST, EulerTour) :-
+    euler_tour(MST, [Start], EulerTour),
+    EulerTour = [Start|_].
+
+euler_tour(_, [End], [End]).
+euler_tour(MST, [Current|Visited], [Current|Path]) :-
+    member((Current, Next), MST),
+    select((Current, Next), MST, NewMST),
+    select((Next, Current), NewMST, NewMST1),
+    euler_tour(NewMST1, [Next, Current|Visited], Path).
+
+% Compute TSP tour
+tsp_tour(Cities, Tour) :-
+    distance_matrix(Cities, Cities, Distances),
+    prim_mst(Distances, MST),
+    minimum_matching(MST, Matchings),
+    flatten(Matchings, FlattenMatchings),
+    sort(FlattenMatchings, SortedMatchings),
+    euler_tour(SortedMatchings, EulerTour),
+    tour_from_euler(EulerTour, Tour).
+
+tour_from_euler([End], [End]).
+tour_from_euler([City1, City2|Rest], [City1|Tour]) :-
+    tour_from_euler([City2|Rest], Tour).
+
+% Example usage
+example_cities([(0, 0), (1, 2), (3, 1), (5, 4), (2, 3)]).
+
+% Goal
+goal :-
+    example_cities(Cities),
+    tsp_tour(Cities, Tour),
+    writeln(Tour).
+
+% Run the goal
+:- initialization(goal, halt).
+```
+
+This Prolog program defines predicates for computing the distance matrix, finding the Minimum Spanning Tree (MST), minimum weighted matching, and Euler tour. Finally, it computes the TSP tour using the XIS algorithm and prints the result.
+
+To run this program, save it in a file (e.g., `tsp.pl`) and consult it with a Prolog interpreter:
+
+```prolog
+?- consult('tsp.pl').
+```
+
+Then, execute the `goal` query:
+
+```prolog
+?- goal.
+```
+
+This will compute and print the TSP tour for the given example cities.
