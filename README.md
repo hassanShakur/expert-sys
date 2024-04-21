@@ -196,3 +196,77 @@ goal :-
 
 This will execute the queries defined in the `goal` predicate and print the results based on the simple facts provided.
 
+## Experiment Number 6
+
+### Objective
+
+- Write a program to implement factorial, fibonacci for a given number
+
+### Solution
+
+#### Factorial Program
+
+```prolog
+% Define the factorial predicate
+factorial(0, 1).
+factorial(N, F) :-
+    N > 0,
+    N1 is N - 1,
+    factorial(N1, F1),
+    F is N * F1.
+
+% Main goal to compute factorial
+goal_factorial(N, Result) :-
+    factorial(N, Result),
+    format('Factorial of ~w is ~w~n', [N, Result]).
+
+% Run the goal to compute factorial
+:- initialization(goal_factorial(5, Result), halt).
+```
+
+#### Fibonacci Program
+
+```prolog
+% Define the Fibonacci predicate
+fib(0, 0).
+fib(1, 1).
+fib(N, Result) :-
+    N > 1,
+    N1 is N - 1,
+    N2 is N - 2,
+    fib(N1, F1),
+    fib(N2, F2),
+    Result is F1 + F2.
+
+% Main goal to compute Fibonacci
+goal_fibonacci(N, Result) :-
+    fib(N, Result),
+    format('Fibonacci number at position ~w is ~w~n', [N, Result]).
+
+% Run the goal to compute Fibonacci
+:- initialization(goal_fibonacci(10, Result), halt).
+```
+
+#### Instructions to Run:
+
+1. Save the Factorial program in a file, say `factorial.pl`.
+2. Save the Fibonacci program in a file, say `fibonacci.pl`.
+3. Open a Prolog interpreter and load the respective file.
+4. Run the `goal_factorial(N, Result)` or `goal_fibonacci(N, Result)` query with the desired value of `N`.
+
+For example, to compute the factorial of 5 using the Factorial program, you'd run:
+
+```prolog
+?- consult('factorial.pl').
+?- goal_factorial(5, Result).
+```
+
+Similarly, to compute the 10th Fibonacci number using the Fibonacci program, you'd run:
+
+```prolog
+?- consult('fibonacci.pl').
+?- goal_fibonacci(10, Result).
+```
+
+This will print the computed factorial and Fibonacci number respectively.
+
