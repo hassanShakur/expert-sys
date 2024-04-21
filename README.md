@@ -270,3 +270,77 @@ Similarly, to compute the 10th Fibonacci number using the Fibonacci program, you
 
 This will print the computed factorial and Fibonacci number respectively.
 
+## Experiment Number 7
+
+### Objective
+
+- Write a program to solve 4-Queen problem.
+
+In the 4 Queens problem the object is to place 4 queens on a chessboard in
+such a way that no queens can capture a piece. This means that no two queens
+may be placed on the same row, column, or diagonal.
+
+Table depiction:
+_  1  2  3  4
+1  1  2  3  4
+2  2  3  4  5
+3  3  4  5  6
+4  4  5  6  7
+
+1. Represent the board positions as 8*8 vector, i.e. [1,2,3,4,5,6,7,8]. Store the set of queens in the list Q.
+2. Calculate the permutation of the above eight numbers stored in set P.
+3. Let the position where the first queen to be placed be (1, Y), for the second be (2, Y1) and so on and store the positions in Q.
+4. Check for the safety of the queens through the predicate, 'noattack()'.
+5. Calculate Y1-Y and Y-Y1. If both are not equal to Xdist , which is the X-distance between the first queen and others, then go to Step 6 else go to Step 7.
+6. Increment Xdist by 1.
+7. Repeat the above for the rest of the queens, until the end of the list is reached.
+8. Print Q as answer.
+9. Exit.
+
+### Solution
+
+Certainly! Below is a Prolog program to solve the 4-Queen problem as per the given instructions:
+
+```prolog
+% Define the predicate to remove an element from a list
+del(I, [I|L], L).
+del(I, [F|L], [F|L1]) :- del(I, L, L1).
+
+% Define the permutation predicate
+permutation([], []).
+permutation([H|T], PL) :- permutation(T, PT), del(H, PL, PT).
+
+% Define the noattack predicate to check if no queens attack each other
+noattack(_, [], _).
+noattack((Y, _), [(Y1, Ydist)|_], Xdist) :-
+    Y1 - Y =\= Xdist,
+    Y - Y1 =\= Xdist,
+    noattack((Y, _), Ydist, Xdist).
+
+% Define the safe predicate to check if the current permutation is safe
+safe([]).
+safe([(Y, Ydist)|Others]) :-
+    safe(Others),
+    noattack((Y, Ydist), Others, 1).
+
+% Define the solution predicate to find the solution to the 4-Queen problem
+solution(Q) :-
+    permutation([1,2,3,4], Q),
+    safe(Q).
+
+% Convert the solution to the desired output format
+format_output([], []).
+format_output([(Y, _)|Others], [Y1|Result]) :-
+    Y1 is Y + 1,
+    format_output(Others, Result).
+
+% Main goal to find the solution and format the output
+goal(Q) :-
+    solution(Q),
+    format_output(Q, FormattedQ),
+    format('Solution: Q = ~w~n', [FormattedQ]).
+
+% Run the goal to get the solution
+:- initialization(goal(Q), halt).
+```
+
