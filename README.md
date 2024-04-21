@@ -281,11 +281,45 @@ such a way that no queens can capture a piece. This means that no two queens
 may be placed on the same row, column, or diagonal.
 
 Table depiction:
-_  1  2  3  4
-1  1  2  3  4
-2  2  3  4  5
-3  3  4  5  6
-4  4  5  6  7
+
+<table>
+  <tr>
+    <td>_</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
+    <td>7</td>
+  </tr>
+</table>
+
 
 1. Represent the board positions as 8*8 vector, i.e. [1,2,3,4,5,6,7,8]. Store the set of queens in the list Q.
 2. Calculate the permutation of the above eight numbers stored in set P.
